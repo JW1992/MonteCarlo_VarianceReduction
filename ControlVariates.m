@@ -10,7 +10,7 @@ clc;
 % 0 and var(y) = 1/2, cov(x, y) = 
 
 
-fun = @(x) exp(x);
+fun = @(x) exp(-x);
 
 EVALUATION = 1E5;
 NUM_SIM = 50;
@@ -21,7 +21,13 @@ x = fun(u);
 y = u - 1/2;
 
 Mu_exp_origin = sum(x) / EVALUATION;
-Mu_exp_diff = sum(x + y) / EVALUATION;
+
+cov_mat = cov(x(:,1),y(:,1));
+% Covariance/var(y): optimal beta
+beta_opt = cov_mat(1,2)/var(y(:,1));
+disp(beta_opt);
+
+Mu_exp_diff = sum(x - beta_opt*y) / EVALUATION;
 
 % Original method
 % One simulation result
